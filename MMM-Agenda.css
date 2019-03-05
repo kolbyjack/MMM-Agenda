@@ -1,0 +1,35 @@
+.MMM-Agenda .symbol {
+  padding-left: 0;
+  padding-right: 10px;
+  font-size: 80%;
+  vertical-align: top;
+}
+
+.MMM-Agenda .symbol span {
+  display: inline-block;
+  -ms-transform: translate(0, 2px); /* IE 9 */
+  -webkit-transform: translate(0, 2px); /* Safari */
+  transform: translate(0, 2px);
+}
+
+.MMM-Agenda .title {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.MMM-Agenda .time {
+  text-align: right;
+  vertical-align: top;
+}
+
+.MMM-Agenda .overdue {
+    text-decoration: underline #ac0000;
+}
+
+.MMM-Agenda .today {
+    text-decoration: underline #03a05c;
+}
+
+.MMM-Agenda .tomorrow {
+    text-decoration: underline #166cec;
+}

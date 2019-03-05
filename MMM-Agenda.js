@@ -56,9 +56,9 @@ Module.register("MMM-Agenda", {
 			}).slice(0, self.config.maximumEntries);
 
 			self.loaded = true;
-		}
 
-		self.updateDom(self.config.animationSpeed);
+			self.updateDom(self.config.animationSpeed);
+		}
 	},
 
 	// Override dom generator.

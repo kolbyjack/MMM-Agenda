@@ -51,8 +51,9 @@ Module.register("MMM-Agenda", {
 				}
 				return e;
 			}).filter(e => {
+				var showCalendar = !self.getCalendarProperty(e.calendarName, "hide", false);
 				var showPastEvents = self.getCalendarProperty(e.calendarName, "showPastEvents", self.config.showPastEvents);
-				return showPastEvents || e.endDate > now;
+				return showCalendar && (showPastEvents || e.endDate > now);
 			}).slice(0, self.config.maximumEntries);
 
 			self.loaded = true;

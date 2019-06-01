@@ -8,6 +8,26 @@
  * MIT Licensed.
  */
 
+function equals(a, b) {
+	if (typeof(a) !== typeof(b)) {
+		return false;
+	}
+
+	if (!!a && (a.constructor === Array || a.constructor === Object)) {
+		for (var key in a) {
+			if (!b.hasOwnProperty(key) || !equals(a[key], b[key])) {
+				return false;
+			}
+		}
+
+		return true;
+	} else if (!!a && a.constructor == Date) {
+		return a.valueOf() === b.valueOf();
+	}
+
+	return a === b;
+}
+
 Module.register("MMM-Agenda", {
 
 	// Define module defaults
@@ -33,8 +53,11 @@ Module.register("MMM-Agenda", {
 	start: function () {
 		Log.log("Starting module: " + this.name);
 
-		this.events = [];
 		this.loaded = false;
+		this.events = [];
+		this.displayedEvents = [];
+		this.updateTimer = null;
+		this.skippedUpdateCount = 0;
 	},
 
 	notificationReceived: function(notification, payload, sender) {
@@ -56,9 +79,21 @@ Module.register("MMM-Agenda", {
 				return showCalendar && (showPastEvents || e.endDate > now);
 			}).slice(0, self.config.maximumEntries);
 
-			self.loaded = true;
+			if (self.updateTimer !== null) {
+				clearTimeout(self.updateTimer);
+				++self.skippedUpdateCount;
+			}
 
-			self.updateDom(self.config.animationSpeed);
+			self.updateTimer = setTimeout(() => {
+				if (!equals(self.events, self.displayedEvents)) {
+					console.log("MMM-Agenda: Skipped " + self.skippedUpdateCount + " updates");
+					self.loaded = true;
+					self.displayedEvents = self.events;
+					self.updateTimer = null;
+					self.skippedUpdateCount = 0;
+					self.updateDom(self.config.animationSpeed);
+				}
+			}, 5000);
 		}
 	},
 
